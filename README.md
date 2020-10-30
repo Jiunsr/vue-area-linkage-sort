@@ -1,31 +1,31 @@
-![npm-version](https://img.shields.io/npm/v/vue-area-linkage.svg) ![license](https://img.shields.io/npm/l/vue-area-linkage.svg)
-# vue-area-linkage
+![npm-version](https://img.shields.io/npm/v/vue-area-linkage-sort.svg) ![license](https://img.shields.io/npm/l/vue-area-linkage-sort.svg)
+# vue-area-linkage-sort
 省市区联动选择. 组合数据来源：[area-data](https://github.com/dwqs/area-data)
 
 ## Installation
 Install the pkg with npm:
 ```
 // v5之前的版本
-npm i --save vue-area-linkage
+npm i --save vue-area-linkage-sort
 
 // v5及之后的版本
-npm i --save vue-area-linkage area-data
+npm i --save vue-area-linkage-sort area-data
 ```
 or yarn
 ```
 // v5之前的版本
-yarn add vue-area-linkage
+yarn add vue-area-linkage-sort
 
 // v5及之后的版本
-yarn add vue-area-linkage area-data
+yarn add vue-area-linkage-sort area-data
 ```
 
 ## Usage
 ```
 import Vue from 'vue';
 import { pca, pcaa } from 'area-data'; // v5 or higher
-import 'vue-area-linkage/dist/index.css'; // v2 or higher
-import VueAreaLinkage from 'vue-area-linkage';
+import 'vue-area-linkage-sort/dist/index.css'; // v2 or higher
+import VueAreaLinkage from 'vue-area-linkage-sort';
 
 Vue.use(VueAreaLinkage)
 ```
@@ -46,7 +46,7 @@ Vue.use(VueAreaLinkage)
 <area-cascader type='all' v-model="selected2" :level='1' :data="pcaa"></area-cascader>
 ```
 
-More demo to visit [here](https://dwqs.github.io/vue-area-linkage/).
+More demo to visit [here](https://dwqs.github.io/vue-area-linkage-sort/).
 
 ## On Demand Import
 > version >= 2.1.2
@@ -64,7 +64,7 @@ npm i babel-plugin-on-demand-import -D
     // ...
     "plugins": [
         ["on-demand-import" {
-            "libraryName": "vue-area-linkage",
+            "libraryName": "vue-area-linkage-sort",
             "libraryPath": "dist/lib"
         }]
     ]
@@ -73,13 +73,13 @@ npm i babel-plugin-on-demand-import -D
 
 ```
 // Only import AreaCascader component
-import { AreaCascader } from 'vue-area-linkage';
+import { AreaCascader } from 'vue-area-linkage-sort';
 Vue.use(AreaCascader);
 
 <area-cascader v-model="val"></area-cascader>
 
 // Only import AreaSelect component
-import { AreaSelect } from 'vue-area-linkage'; 
+import { AreaSelect } from 'vue-area-linkage-sort'; 
 Vue.use(AreaSelect);
 
 <area-select v-model="val2"></area-select>

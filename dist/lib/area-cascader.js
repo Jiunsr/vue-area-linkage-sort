@@ -3652,7 +3652,7 @@ var key = 0;
         this.cascader.eventBus.$on('set-scroll-top', this.scrollToSelectedOption);
     }
 });
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-178d61cd","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/cascader/caspanel.vue
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-f4a0d540","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/cascader/caspanel.vue
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',[_c('ul',{ref:"list",staticClass:"cascader-menu-list"},_vm._l((_vm.data),function(item,index){return _c('li',{key:_vm.getUniqueKey(index),class:{
                 'cascader-menu-option': true,
                 'cascader-menu-extensible': item['children'],
@@ -3919,7 +3919,7 @@ var Component = normalizeComponent(
         window.document.removeEventListener('click', this.handleDocClick, false);
     }
 });
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-b9d2f694","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/cascader/index.vue
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-ac6bec7a","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/cascader/index.vue
 var cascader_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"area",staticClass:"area-select",class:{
     'medium': _vm.size === 'medium',
     'small': _vm.size === 'small',
@@ -4302,6 +4302,23 @@ var cascader_Component = cascader_normalizeComponent(
             Object(utils["a" /* assert */])(false, '\u8BBE\u7F6E\u7684 level \u503C\u53EA\u652F\u6301 0/1');
         }
 
+        /* 递归省市区按首字母排序 */
+        var sortPostback = function sortPostback(list) {
+            if (list instanceof Array) {
+                list = list.sort(function (a, b) {
+                    return a.label.localeCompare(b.label);
+                });
+            }
+            if (list.some(function (item) {
+                return item.hasOwnProperty('children');
+            })) {
+                for (var index in list) {
+                    sortPostback(list[index].children);
+                }
+            }
+        };
+        sortPostback(this.options);
+
         if (Object(utils["c" /* isArray */])(this.value) && this.value.length === this.level + 2) {
             this.beforeSetDefault();
             this.setDefaultValue();
@@ -4312,7 +4329,7 @@ var cascader_Component = cascader_normalizeComponent(
         }
     }
 });
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-5ab90ac5","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/index.vue
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-16096b68","hasScoped":false,"buble":{"transforms":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./components/area-cascader/index.vue
 var area_cascader_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"area-cascader-wrap"},[_c('v-cascader',{attrs:{"placeholder":_vm.placeholder,"options":_vm.options,"defaultsAreaCodes":_vm.defaultsAreaCodes,"size":_vm.size,"disabled":_vm.disabled,"separator":_vm.separator,"data":_vm.data},on:{"setDefault":function($event){_vm.isSetDefault = true},"change":_vm.handleChange}})],1)}
 var area_cascader_staticRenderFns = []
 var area_cascader_esExports = { render: area_cascader_render, staticRenderFns: area_cascader_staticRenderFns }

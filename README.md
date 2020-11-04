@@ -1,6 +1,7 @@
 ![npm-version](https://img.shields.io/npm/v/vue-area-linkage-sort.svg) ![license](https://img.shields.io/npm/l/vue-area-linkage-sort.svg)
 # vue-area-linkage-sort
-省市区联动选择. 组合数据来源：[area-data](https://github.com/dwqs/area-data)
+- 省市区联动选择. 组合数据来源：[area-data](https://github.com/dwqs/area-data)
+- v5.0.2 支持首字母拼音排序
 
 ## Installation
 Install the pkg with npm:

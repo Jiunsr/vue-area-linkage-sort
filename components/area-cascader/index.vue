@@ -16,10 +16,10 @@
 
 <script>
     import find from 'lodash.find';
-
     import Cascader from './cascader/index.vue';
-
     import { assert, isArray } from '@src/utils';
+    import { prefix_pinyin as prefix } from '@src/prefix-pinyin';
+    import pinyin from 'pinyin';
 
     export default {
         name: 'area-cascader',
@@ -322,11 +322,29 @@
             } else {
                 assert(false, `设置的 level 值只支持 0/1`);
             }
-            
+            /* 匹配首字母排序 */
+            const matchName = (name) => {
+                if(Boolean(prefix[name])){
+                    return prefix[name];
+                }
+                if(name.endsWith('省') || name.endsWith('市') || name.endsWith('区')){
+                    let key_p = name.replace('省','');
+                    let key_c = name.replace('市','');
+                    let key_d = name.replace('区','');
+                    let prefix_py = pinyin(name)[0];
+                    return prefix[key_p] || prefix[key_c] || prefix[key_d] || prefix_py[0];
+                }
+                let prefix_py = pinyin(name)[0];
+                return prefix_py[0];
+            }
             /* 递归省市区按首字母排序 */
             const sortPostback = list => {
                 if(list instanceof Array){
-                    list = list.sort((a,b) => a.label.localeCompare(b.label));
+                    list = list.sort((a,b) => {
+                        let a_prefix = matchName(a.label);
+                        let b_prefix = matchName(b.label);
+                        return a_prefix.localeCompare(b_prefix, 'zh-CN')
+                    });
                 }
                 if(list.some(item => item.hasOwnProperty('children'))){
                     for(let index in list){

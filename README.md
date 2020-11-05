@@ -112,14 +112,14 @@ Vue.use(AreaSelect);
 | disabled | Boolean | - | false | 是否禁用 |
 | data | Object | - | - | 地区数据 |
 | dict | Object | - | - | 自定义排序规则 |
->新特性示例
-    排序规则：将传入的地区数据去匹配拼音字典首字母，默认匹配出字符按a-z排序，可以配置dict自定义传入会覆盖默认排序，dict结构如下
+>新特性示例</br>
+    排序规则：将传入的地区数据去匹配拼音字典首字母，默认规则按拼音的a-z排序，可以配置dict自定义传入会覆盖默认排序，dict结构如下
 ```
     <area-cascader :level="1" v-model="selected" :data="pcaa" :dict="setDict"></area-cascader>
     <script>
         export default {
             data(){
-			    return {
+                return {
                     setDict: {
                         "广东省": 'a',
                         "安徽省": 'b'

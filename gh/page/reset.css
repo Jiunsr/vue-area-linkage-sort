@@ -39,10 +39,6 @@ body {
     font-size: 14px;
     line-height: 1;
     background: none;
-    -moz-user-select:none;
-    -webkit-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
     overflow-x:hidden;
     -webkit-overflow-scrolling:touch;
     -webkit-font-smoothing: antialiased;

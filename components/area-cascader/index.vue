@@ -18,8 +18,7 @@
     import find from 'lodash.find';
     import Cascader from './cascader/index.vue';
     import { assert, isArray } from '@src/utils';
-    import { prefix_pinyin as prefix } from '@src/prefix-pinyin';
-    import pinyin from 'pinyin';
+    import { prefix_pinyin as prefix, prefix_pinyin_min as prefix_min } from '@src/prefix-pinyin';
 
     export default {
         name: 'area-cascader',
@@ -60,7 +59,11 @@
             data: {
                 type: Object,
                 required: true
-            }
+            },
+            dict: {
+                type: Object,
+                required: false
+            },
         },
 
         data () {
@@ -322,6 +325,39 @@
             } else {
                 assert(false, `设置的 level 值只支持 0/1`);
             }
+            /* 首字母匹配本地字典 */
+            // let prefixKeys = Object.keys(prefix);
+            const localPinyin = name => {
+                if(prefix_min[name[0]]){
+                    return prefix_min[name[0]];
+                }
+                /* 递归匹配首字母 */
+                // const matchPerf = (namePref, strNum) => {
+                //     let name_pref = namePref.slice(0, strNum);
+                //     let name_keys = prefixKeys.filter(key => key.startsWith(name_pref));
+                //     /* 匹配结果 */
+                //     if(name_keys.length){
+                //         return prefix[name_keys[0]];
+                //     }
+                //     if(strNum<=0){
+                //         return namePref
+                //     }
+                //     return matchPerf(namePref, strNum-=1);
+                // }
+                // let name_piny = matchPerf(name, 2);
+                return name
+            }
+            /* 用户自定义的覆盖默认排序 */
+            if(this.dict && typeof(this.dict)==='object' && Object.keys(this.dict).length){
+                for(let dictKey in this.dict){
+                    if(dictKey.length >= 2 && (dictKey.endsWith('省') || dictKey.endsWith('市') || dictKey.endsWith('区'))){
+                        let prefKey = dictKey.slice(0, dictKey.length-1);
+                        prefix[prefKey] = this.dict[dictKey];
+                    }else{
+                        prefix[dictKey] = this.dict[dictKey];
+                    }
+                }
+            }
             /* 匹配首字母排序 */
             const matchName = (name) => {
                 if(Boolean(prefix[name])){
@@ -331,11 +367,11 @@
                     let key_p = name.replace('省','');
                     let key_c = name.replace('市','');
                     let key_d = name.replace('区','');
-                    let prefix_py = pinyin(name)[0];
-                    return prefix[key_p] || prefix[key_c] || prefix[key_d] || prefix_py[0];
+                    let prefix_py = localPinyin(name);
+                    return prefix[key_p] || prefix[key_c] || prefix[key_d] || prefix_py;
                 }
-                let prefix_py = pinyin(name)[0];
-                return prefix_py[0];
+                let prefix_py = localPinyin(name);
+                return prefix_py;
             }
             /* 递归省市区按首字母排序 */
             const sortPostback = list => {
@@ -343,7 +379,7 @@
                     list = list.sort((a,b) => {
                         let a_prefix = matchName(a.label);
                         let b_prefix = matchName(b.label);
-                        return a_prefix.localeCompare(b_prefix, 'zh-CN')
+                        return a_prefix.localeCompare(b_prefix, 'en-US')
                     });
                 }
                 if(list.some(item => item.hasOwnProperty('children'))){

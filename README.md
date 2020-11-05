@@ -121,8 +121,8 @@ Vue.use(AreaSelect);
             data(){
                 return {
                     setDict: {
-                        "广东省": 'a',
-                        "安徽省": 'b'
+                        "广东省": 'a', // 设置广东排第一安徽排第二
+                        "安徽省": 'b',
                     }
                 }
             }

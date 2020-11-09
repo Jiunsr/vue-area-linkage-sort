@@ -98,6 +98,7 @@ Vue.use(AreaSelect);
 | size | String | small/medium/large | medium | 设置输入框的大小 |
 | disabled | Boolean | - | false | 是否禁用 |
 | data | Object | - | - | 地区数据 |
+| dict | Object | - | - | 自定义排序规则 |
 
 >v4 仅支持省市区联动，即 v4 不再支持 level 的值为 3(省市区街联动)
 

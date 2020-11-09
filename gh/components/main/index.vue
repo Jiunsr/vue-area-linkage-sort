@@ -2,11 +2,11 @@
     <div class="app-main">
         <h3>基本使用</h3>
         <h4>1. 作为选择器</h4>
-        <h5>默认形式</h5>
+        <h5>默认形式（返回区域文本）</h5>
         <basic></basic>
         <h5>改变大小</h5>
         <size></size>
-        <h5>返回区域文本</h5>
+        <h5>返回区域代码</h5>
         <returns></returns>
         <h5>返回区域代码和文本</h5>
         <area-code></area-code>
@@ -25,9 +25,9 @@
         <h5>省市区联动</h5>
         <v-area></v-area>
         <h4>2. 作为级联器(只支持2/3级联动)</h4>
-        <h5>默认形式</h5>
+        <h5>默认形式（返回区域文本）</h5>
         <cas-basic></cas-basic>
-        <h5>返回区域文本</h5>
+        <h5>返回区域代码</h5>
         <cas-returns></cas-returns>
         <h5>返回区域文本和代码</h5>
         <cas-area-code></cas-area-code>

@@ -1,9 +1,9 @@
 ![npm-version](https://img.shields.io/npm/v/vue-area-linkage-sort.svg) ![license](https://img.shields.io/npm/l/vue-area-linkage-sort.svg)
 # vue-area-linkage-sort
+- ### v5.2.0 新增特性（2020-11-09维护）
+    - 支持首字母拼音排序（a,b,c..~z）
+    - 支持用户自定义排序（新增dict属性，<a href="#特性示例">配置示例</a>）
 - 省市区联动选择. 组合数据来源：[area-data](https://github.com/dwqs/area-data)
-- v5.0.3 area-cascader组件新增特性（2020-11-05）
-    - 支持首字母拼音排序
-    - 支持自定义排序字典排序（新增dict属性）
 
 ## Installation
 Install the pkg with npm:
@@ -112,21 +112,23 @@ Vue.use(AreaSelect);
 | disabled | Boolean | - | false | 是否禁用 |
 | data | Object | - | - | 地区数据 |
 | dict | Object | - | - | 自定义排序规则 |
->新特性示例</br>
+
+- <a name="特性示例">新特性示例</a></br>
     排序规则：将传入的地区数据去匹配拼音字典首字母，默认规则按拼音的a-z排序，可以配置dict自定义传入会覆盖默认排序，dict结构如下
 ```
     <area-cascader :level="1" v-model="selected" :data="pcaa" :dict="setDict"></area-cascader>
+    
     <script>
-        export default {
-            data(){
-                return {
-                    setDict: {
-                        "广东省": 'a', // 设置广东排第一安徽排第二
-                        "安徽省": 'b',
-                    }
+    export default {
+        data(){
+            return {
+                setDict: {
+                    "广东省": 'a', // 设置广东排第一 安徽排第二
+                    "安徽省": 'b',
                 }
             }
         }
+    }
     </script>
 ```
 ## 事件

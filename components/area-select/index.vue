@@ -1,28 +1,28 @@
 <template>
     <div class="area-select-wrap">
         <v-select v-model="curProvinceCode" :placeholder="placeholders[0] ? placeholders[0] : '请选择'" :size="size" :disabled="disabled">
-            <v-option v-for="(val, key) in provinces" 
+            <v-option v-for="(item, key) in provincesSort" 
                 :key="key" 
-                :label="val" 
-                :value="key">
+                :label="item.label" 
+                :value="item.key">
             </v-option>
         </v-select>
 
          <v-select v-model="curCityCode" :placeholder="placeholders[1] ? placeholders[1] : '请选择'" v-if="level>=1" :size="size" :disabled="disabled">
             <p v-if="!Object.keys(citys).length" class="area-select-empty">暂无数据</p> 
-            <v-option v-else v-for="(val, key) in citys" 
+            <v-option v-else v-for="(item, key) in citysSort" 
                 :key="key" 
-                :label="val" 
-                :value="key">
+                :label="item.label" 
+                :value="item.key">
             </v-option>
         </v-select>
 
         <v-select v-model="curAreaCode" :placeholder="placeholders[2] ? placeholders[2] : '请选择'" v-if="level>=2" :size="size" :disabled="disabled">
             <p v-if="!Object.keys(areas).length" class="area-select-empty">暂无数据</p> 
-            <v-option v-else v-for="(val, key) in areas" 
+            <v-option v-else v-for="(item, key) in areasSort" 
                 :key="key" 
-                :label="val" 
-                :value="key">
+                :label="item.label" 
+                :value="item.key">
             </v-option>
         </v-select>
     </div>
@@ -35,6 +35,7 @@
     import Option from './select/option.vue';
 
     import { assert, isArray } from '@src/utils';
+    import { setDict, matchName } from '@src/prefix-pinyin';
 
     export default {
         name: 'area-select',
@@ -49,7 +50,7 @@
             },
             type: {
                 type: String,
-                default: 'code', //  code-返回行政区域代码 text-返回文本 all-返回 code 和 text
+                default: 'text', //  code-返回行政区域代码 text-返回文本 all-返回 code 和 text
                 validator: (val) => ['all', 'code', 'text'].indexOf(val) > -1
             },
             placeholders: {
@@ -74,7 +75,11 @@
             data: {
                 type: Object,
                 required: true
-            }
+            },
+            dict: {
+                type: Object,
+                required: false
+            },
         },
 
         data () {
@@ -87,6 +92,11 @@
                 provinces: this.data['86'],
                 citys: {},
                 areas: {},
+
+                // 二次开发 按首字母拼音排序
+                provincesSort: [],
+                citysSort: [],
+                areasSort: [],
 
                 curProvince: '', // text
                 curProvinceCode: '', // code
@@ -103,6 +113,54 @@
         },
 
         watch: {
+            /* 按首字母拼音排序 */
+            provinces: {
+                immediate: true,
+                handler(provinces, _provinces){
+                    let areaList = [];
+                    for(let key in provinces){
+                        let label = provinces[key];
+                        areaList.push({ key, label });
+                    }
+                    /* 用户自定义的覆盖默认排序 */
+                    setDict(this.dict);
+                    /* 递归省市区按首字母排序 */
+                    this.sortPostback(areaList);
+                    this.provincesSort = areaList;
+                }
+            },
+            citys: {
+                immediate: true,
+                handler(citys, _citys){
+                    if(!citys || Object.keys(citys).length==0){
+                        return
+                    }
+                    let areaList = [];
+                    for(let key in citys){
+                        let label = citys[key];
+                        areaList.push({ key, label });
+                    }
+                    /* 递归省市区按首字母排序 */
+                    this.sortPostback(areaList);
+                    this.citysSort = areaList;
+                }
+            },
+            areas: {
+                immediate: true,
+                handler(areas, _areas){
+                    if(!areas || Object.keys(areas).length==0){
+                        return
+                    }
+                    let areaList = [];
+                    for(let key in areas){
+                        let label = areas[key];
+                        areaList.push({ key, label });
+                    }
+                    /* 递归省市区按首字母排序 */
+                    this.sortPostback(areaList);
+                    this.areasSort = areaList;
+                }
+            },
             curProvinceCode (val, oldVal) {
                 this.curProvince = this.provinces[val];
                 this.provinceChange(val);
@@ -131,6 +189,20 @@
         },
 
         methods: {
+            sortPostback: list => {
+                if(list instanceof Array){
+                    list = list.sort((a,b) => {
+                        let a_prefix = matchName(a.label);
+                        let b_prefix = matchName(b.label);
+                        return a_prefix.localeCompare(b_prefix, 'en-US')
+                    });
+                }
+                if(list.some(item => item.hasOwnProperty('children'))){
+                    for(let index in list){
+                        this.sortPostback(list[index].children);
+                    }
+                }
+            },
             provinceChange (val) {
                 if (this.level === 0) {
                     this.selectChange();
